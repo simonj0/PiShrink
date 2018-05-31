@@ -79,6 +79,7 @@ if [ "$should_skip_autoexpand" = false ]; then
   if [ ! -f "$mountdir/etc/rc.local" ]; then
     echo "Creating empty /etc/rc.local"
     touch "$mountdir/etc/rc.local"
+    chmod 755 "$mountdir/etc/rc.local"
   fi
 
   if [ $(md5sum "$mountdir/etc/rc.local" | cut -d ' ' -f 1) != "0542054e9ff2d2e0507ea1ffe7d4fc87" ]; then
