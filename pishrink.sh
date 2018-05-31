@@ -75,9 +75,16 @@ if [ "$should_skip_autoexpand" = false ]; then
   mountdir=$(mktemp -d)
   mount "$loopback" "$mountdir"
 
+  #Create empty rc.local if it doesn't exist yet
+  if [ ! -f "$mountdir/etc/rc.local" ]; then
+    echo "Creating empty /etc/rc.local"
+    touch "$mountdir/etc/rc.local"
+  fi
+
   if [ $(md5sum "$mountdir/etc/rc.local" | cut -d ' ' -f 1) != "0542054e9ff2d2e0507ea1ffe7d4fc87" ]; then
-    echo "Creating new /etc/rc.local"
+    echo "Backing up previous /etc/rc.local"
     mv "$mountdir/etc/rc.local" "$mountdir/etc/rc.local.bak"
+    echo "Creating new /etc/rc.local"
     #####Do not touch the following lines#####
 cat <<\EOF1 > "$mountdir/etc/rc.local"
 #!/bin/bash
