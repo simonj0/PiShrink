@@ -120,7 +120,7 @@ cat <<EOF > /etc/rc.local &&
 #!/bin/sh
 echo "Expanding /dev/$ROOT_PART"
 resize2fs /dev/$ROOT_PART
-rm -f /etc/rc.local; cp -f /etc/rc.local.bak /etc/rc.local; /etc/rc.local
+rm -f /etc/rc.local; mv -f /etc/rc.local.bak /etc/rc.local; /etc/rc.local
 
 EOF
 reboot
@@ -131,7 +131,7 @@ raspi_config_expand() {
 if [[ $? != 0 ]]; then
   return -1
 else
-  rm -f /etc/rc.local; cp -f /etc/rc.local.bak /etc/rc.local; /etc/rc.local
+  rm -f /etc/rc.local; mv -f /etc/rc.local.bak /etc/rc.local; /etc/rc.local
   reboot
   exit
 fi
@@ -142,7 +142,7 @@ rpi3_expand() {
   RESIZE_OUTPUT=$(/usr/bin/env /tmp/rpi3-resizerootfs)
   rm /tmp/rpi3-resizerootfs
   if [[ $RESIZE_OUTPUT = *"Resizing"* ]]; then
-    rm -f /etc/rc.local; cp -f /etc/rc.local.bak /etc/rc.local; /etc/rc.local
+    rm -f /etc/rc.local; mv -f /etc/rc.local.bak /etc/rc.local; /etc/rc.local
     reboot
     exit
   else
@@ -161,7 +161,7 @@ else
   echo "ERROR: Expanding failed..."
   sleep 5
 fi
-rm -f /etc/rc.local; cp -f /etc/rc.local.bak /etc/rc.local; /etc/rc.local
+rm -f /etc/rc.local; mv -f /etc/rc.local.bak /etc/rc.local; /etc/rc.local
 exit 0
 EOF1
     #####End no touch zone#####
