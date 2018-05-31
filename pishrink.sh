@@ -136,12 +136,31 @@ else
   exit
 fi
 }
-raspi_config_expand
-echo "WARNING: Using backup expand..."
-sleep 5
-do_expand_rootfs
-echo "ERROR: Expanding failed..."
-sleep 5
+rpi3_expand() {
+  cp /usr/sbin/rpi3-resizerootfs /tmp/rpi3-resizerootfs
+  sed -i '/^check_orig_partition_table/s/^/#/' /tmp/rpi3-resizerootfs
+  RESIZE_OUTPUT=$(/usr/bin/env /tmp/rpi3-resizerootfs)
+  rm /tmp/rpi3-resizerootfs
+  if [[ $RESIZE_OUTPUT = *"Resizing"* ]]; then
+    rm -f /etc/rc.local; cp -f /etc/rc.local.bak /etc/rc.local; /etc/rc.local
+    reboot
+    exit
+  else
+    return -1
+  fi
+}
+if [ -f /usr/sbin/rpi3-resizerootfs ]; then
+  echo "INFO: Using rpi3-resizerootfs"
+  rpi3_expand
+  sleep 5
+else
+  raspi_config_expand
+  echo "WARNING: Using backup expand..."
+  sleep 5
+  do_expand_rootfs
+  echo "ERROR: Expanding failed..."
+  sleep 5
+fi
 rm -f /etc/rc.local; cp -f /etc/rc.local.bak /etc/rc.local; /etc/rc.local
 exit 0
 EOF1
