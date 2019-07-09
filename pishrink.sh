@@ -82,7 +82,7 @@ if [ "$should_skip_autoexpand" = false ]; then
     chmod 755 "$mountdir/etc/rc.local"
   fi
 
-  if [ $(md5sum "$mountdir/etc/rc.local" | cut -d ' ' -f 1) != "0542054e9ff2d2e0507ea1ffe7d4fc87" ]; then
+  if [ $(md5sum "$mountdir/etc/rc.local" | cut -d ' ' -f 1) != "8615830d07a32e13822c425dbe1dde36" ]; then
     echo "Backing up previous /etc/rc.local"
     mv "$mountdir/etc/rc.local" "$mountdir/etc/rc.local.bak"
     echo "Creating new /etc/rc.local"
